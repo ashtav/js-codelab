@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Codelab</title>
+</head>
+
+<body>
+
+    <script src="currency.js"></script>
+    <script>
+        // refs : https://currency.js.org/
+
+        const isFloat = function (n) {
+            return Number(n) === n && n % 1 !== 0;
+        }
+
+        const isInt = function (n) {
+            return Number(n) === n && n % 1 === 0;
+        }
+
+        // get length of number after comma
+        const getDecimal = function (n) {
+            return n.toString().split('.')[1]?.length || 0;
+        }
+
+        // this function is to convert number to IDR currency format
+        // ex: 1500.numToIdr() => 1.500
+        Object.prototype.numToIdr = function (params) {
+            let number = Number(this.toString() || 0);
+            return currency(number, { separator: '.', decimal: ',', precision: params?.precision ?? getDecimal(number), symbol: params?.symbol ?? '' }).format()
+        }
+
+        // this function is to convert IDR currency format to number
+        // ex: 'Rp55.000,83' => 55000.83
+        String.prototype.strToNum = function () {
+            let number = this.toString();
+            return currency(number, { separator: '.', decimal: ',' }).value
+        }
+
+
+
+        let number = 'Rp55.000,83'
+        // let result = currency(number, { separator: '.', decimal: ',' })
+
+        console.log(number.strToNum())
+
+        // console.log(number.numToIdr({ symbol: 'Rp' }))
+    </script>
+
+</body>
+
+</html>
